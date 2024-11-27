@@ -1,18 +1,28 @@
 package ie.atu.week11example;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PersonService {
-    // Placeholder method to save a person (add to Db in the next two weeks)
-    public void savePerson(Person person) {
-        System.out.println("Person saved: " + person);
+    private PaymentClient paymentClient;
+    private ReceiptClient receiptClient;
+
+    @Autowired
+    public PersonService(PaymentClient paymentClient){
+        this.paymentClient = paymentClient;
     }
 
-    // Placeholder method to retrieve a person by employeeId
+    public PersonService(ReceiptClient receiptClient) {
+        this.receiptClient = receiptClient;
+    }
+
+    public void savePerson(Person person) {
+        String response = paymentClient.makePayment(person);
+        System.out.println("Person saved: " + person + " " + response);
+    }
+
     public Person getPersonByEmployeeId(String employeeId) {
-        // fetch data from a database in future lab
-        // For simplicity, we return a dummy person here
         return new Person();
     }
 }
